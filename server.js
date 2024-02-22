@@ -26,55 +26,49 @@ app.use('/timesync', timesyncServer.requestHandler);
 
 //#ef OSC.JS
 var osc = require("osc");
-
-var udpPort = new osc.UDPPort({
-  // This is the port we're listening on.
+var sclang = new osc.UDPPort({
+  // Listen msgs from sclang
   localAddress: "127.0.0.1",
-  localPort: 57121,
-  // This is where sclang is listening for OSC messages.
+  localPort: 12321,
+  // sclang
   remoteAddress: "127.0.0.1",
   remotePort: 57120,
   metadata: true
 });
 // Open the socket.
-udpPort.open();
-
-// Every second, send an OSC message to SuperCollider
-// setInterval(function() {
-//   var msg = {
-//     address: "/hello/from/oscjs",
-//     args: [{
-//         type: "f",
-//         value: Math.random()
-//       },
-//       {
-//         type: "f",
-//         value: Math.random()
-//       }
-//     ]
-//   };
-//
-//   console.log("Sending message", msg.address, msg.args, "to", udpPort.options.remoteAddress + ":" + udpPort.options.remotePort);
-//   console.log(msg);
-//   udpPort.send(msg);
-// }, 1000);
+sclang.open();
 //#endef OSC.JS
 
 //#ef SOCKET IO
 io.on('connection', function(socket) {
-
-  socket.on('msgFromBrowser', function(data) {
-    console.log(data);
-    udpPort.send(data);
+  socket.on('reverseChips', function(data) {
+    sclang.send(data);
+    console.log('reverseChips');
   });
-
-  //send msg to clients
-  // socket.broadcast.emit('sf004_stop_broadcastFromServer', {
-  //   pieceId: pieceId,
-  // });
-  // socket.emit('sf004_stop_broadcastFromServer', {
-  //   pieceId: pieceId,
-  // });
+  socket.on('swirl', function(data) {
+    sclang.send(data);
+    console.log('swirl');
+  });
+  socket.on('bloop', function(data) {
+    sclang.send(data);
+    console.log('bloop');
+  });
+  socket.on('beam', function(data) {
+    sclang.send(data);
+    console.log('beam');
+  });
+  socket.on('giant', function(data) {
+    sclang.send(data);
+    console.log('giant');
+  });
+  socket.on('chime', function(data) {
+    sclang.send(data);
+    console.log('chime');
+  });
+  socket.on('crunch', function(data) {
+    sclang.send(data);
+    console.log('crunch');
+  });
 
 }); // End Socket IO
 //#endef >> END SOCKET IO
